@@ -1,3 +1,19 @@
-export function decodeVarint(data:Uint8Array,offset=0){let value=0n,shift=0n;for(let i=offset;i<data.length&&i<offset+10;i++){const byte=data[i];value|=BigInt(byte&127)<<shift;if(!(byte&128))return{value,length:i-offset+1};shift+=7n}return null}
-export type Field={number:number;wireType:number;raw:Uint8Array};
-export class DynamicMessage{fields:Field[]=[];add(field:Field){this.fields.push(field)}unknown(){return this.fields.slice()}}
+export { decodeVarint, encodeVarint } from './varint.js';
+export { Writer, concatBytes } from './writer.js';
+export {
+  WireError,
+  scanMessage, rawKey, rawValue, rawRecord,
+  WIRE_VARINT, WIRE_FIXED64, WIRE_LENGTH_DELIMITED,
+  WIRE_SGROUP, WIRE_EGROUP, WIRE_FIXED32,
+  type RawEntry,
+} from './wire.js';
+export {
+  normalizeSchema, scalarWire, isPackable, acceptableWire,
+  decodeScalar, decodePacked, encodeScalarValue, encodePackedBody,
+  type Schema, type FieldSchema, type ScalarType,
+} from './schema.js';
+export {
+  DynamicMessage,
+  type Entry, type UnknownField, type Field, type ScalarValue,
+  type SerializeMode,
+} from './message.js';
